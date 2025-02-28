@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6-Month Average Bank Balance Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f2f5f7;
+            color: #333;
+            position: relative;
+        }
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            height: 60px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007BFF;
+            margin-top: 100px;
+        }
+        .month-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .month-section h3 {
+            margin-bottom: 15px;
+            color: #17a2b8;
+        }
+        .input-group {
+            margin: 5px 0;
+        }
+        .input-group label {
+            display: inline-block;
+            width: 60px;
+            margin-right: 10px;
+            font-weight: 500;
+        }
+        .input-group input {
+            width: 100px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+        }
+        #calculate-btn {
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #calculate-btn:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 22px;
+            color: #d63384;
+            font-weight: bold;
+        }
+        @media(max-width: 500px) {
+            .input-group label {
+                width: 80px;
+            }
+            .input-group input {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://rupeeboss.com/wp-content/uploads/2023/08/Untitled_design__12_-removebg-preview.png" alt="Rupeeboss Logo" class="logo">
+
+    <h2>6-Month Average Bank Balance Calculator</h2>
+
+    <!-- Input sections for each of the last 6 months -->
+    <div id="months-container">
+        <!-- JavaScript will populate months dynamically -->
+    </div>
+
+    <button id="calculate-btn" onclick="calculateAverage()">Calculate 6-Month Average</button>
+
+    <div id="result"></div>
+
+    <script>
+        // Generate 6-month sections dynamically
+        const container = document.getElementById('months-container');
+        const dateLabels = ['1st', '5th', '15th', '20th', '25th'];
+        const months = [];
+
+        // Get last 6 months' names dynamically
+        const today = new Date();
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+            const monthName = d.toLocaleString('default', { month: 'long', year: 'numeric' });
+            months.push(monthName);
+        }
+
+        // Create input sections for each month
+        months.forEach((month) => {
+            const section = document.createElement('div');
+            section.className = 'month-section';
+            section.innerHTML = `<h3>${month}</h3>`;
+            dateLabels.forEach(date => {
+                section.innerHTML += `
+                    <div class="input-group">
+                        <label for="${month}-${date}">${date}:</label>
+                        <input type="number" id="${month}-${date}" placeholder="₹0" min="0">
+                    </div>`;
+            });
+            container.appendChild(section);
+        });
+
+        // Calculate the 6-month average
+        function calculateAverage() {
+            let totalSum = 0;
+            let count = 0;
+
+            months.forEach(month => {
+                dateLabels.forEach(date => {
+                    const input = document.getElementById(`${month}-${date}`);
+                    const value = parseFloat(input.value) || 0;
+                    totalSum += value;
+                    count++;
+                });
+            });
+
+            const average = count > 0 ? (totalSum / count).toFixed(2) : 0;
+            document.getElementById('result').innerText = `6-Month Average Bank Balance: ₹${average}`;
+        }
+    </script>
+
+</body>
+</html>
